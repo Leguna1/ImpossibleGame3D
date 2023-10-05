@@ -1,29 +1,45 @@
-using System;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.Vector3;
 
 public class PlayerController : MonoBehaviour
 {
     public float speedForce = 0.04f;
-    public int jumpPower = 300;
+    public float groundRotationSpeed = 10f;
+    public float airRotationSpeed = 5f;
+    public float jumpForce = 300f;
+
+    private bool isGrounded;
+    private float rotationSpeedMultiplier = 1.0f;
+
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
-            if (Input.GetButtonDown("Jump") && IsTouchingGround())
-        {
-            Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
-            rigidbody.AddForce(0, jumpPower, 0);
-            rigidbody.angularVelocity = new Vector3(2, 0, 0);
-        }
+        // Check if the player is grounded
+        isGrounded = IsTouchingGround();
+
+        // Movement
         transform.Translate(0, 0, speedForce, Space.World);
 
-        bool IsTouchingGround()
+        // Rotation
+        float rotationSpeed = isGrounded ? groundRotationSpeed : airRotationSpeed;
+        float rotationAmount = speedForce * rotationSpeedMultiplier * rotationSpeed * Time.fixedDeltaTime;
+        Quaternion targetRotation = transform.rotation * Quaternion.Euler(rotationAmount, 0, 0);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 0.1f);
+
+        // Jumping
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            int layerMask = LayerMask.NameToLayer("Ground");
-            return Physics.CheckBox(transform.position, transform.lossyScale / 
-                                                        1.99f, transform.rotation, layerMask);
+            Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
+            rigidbody.AddForce(0, jumpForce, 0);
+            rotationSpeedMultiplier = 1.5f; // Slow down rotation in the air
+        }
+        else if (isGrounded)
+        {
+            rotationSpeedMultiplier = 3.0f; // Restore normal rotation speed on the ground
         }
     }
-    
+
+    bool IsTouchingGround()
+    {
+        int layerMask = LayerMask.NameToLayer("Ground");
+        return Physics.CheckBox(transform.position, transform.lossyScale / 1.99f, transform.rotation, layerMask);
+    }
 }
