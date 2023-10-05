@@ -14,8 +14,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
-        rigidbody.AddForce(0, 300, 0);
+        if (Input.GetButtonDown("Jump"))
+        {
+            Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
+            rigidbody.AddForce(0, 300, 0);
+            
+        }
         transform.Translate(0, 0, speed);
     }
 }
