@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float speed = 0.04f;
+    public float speedForce = 0.04f;
+    public int jumpPower = 300;
     void Start()
     {
         
@@ -17,9 +16,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
-            rigidbody.AddForce(0, 300, 0);
+            rigidbody.AddForce(0, jumpPower, 0);
             
         }
-        transform.Translate(0, 0, speed);
+        transform.Translate(0, 0, speedForce);
     }
 }
