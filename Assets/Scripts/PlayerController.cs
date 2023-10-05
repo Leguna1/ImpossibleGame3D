@@ -10,13 +10,20 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump") && IsTouchingGround())
         {
             Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
             rigidbody.AddForce(0, jumpPower, 0);
-            
-            
+            rigidbody.angularVelocity = new Vector3(2, 0, 0);
         }
-        transform.Translate(0, 0, speedForce);
-        
+        transform.Translate(0, 0, speedForce, Space.World);
+
+        bool IsTouchingGround()
+        {
+            int layerMask = LayerMask.NameToLayer("Ground");
+            return Physics.CheckBox(transform.position, transform.lossyScale / 
+                                                        1.99f, transform.rotation, layerMask);
+        }
     }
+    
 }
