@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private float rotationSpeedMultiplier = 1.0f;
 
-    void Update()
+    void FixedUpdate()
     {
         // Check if the player is grounded
         isGrounded = IsTouchingGround();
