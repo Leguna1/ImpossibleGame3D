@@ -2,22 +2,43 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speedForce = 1f; 
-    public int jumpForce = 300;
-   void Update()
+    public float speed = 1f;
+    public float rotate = 2;
+    public float jumpForce = 300;
+    public float fallGravity = -10;
+    public float fallTolerance= -1f;
+    public int targetFrameRate = 60;
+    private void FixedUpdate()
     {
-        transform.Translate(0, 0, speedForce);
-       if (Input.GetButtonDown("Jump") && IsTouchingGround())
-        { 
-          Rigidbody rigidbody = gameObject.GetComponent<Rigidbody>();
-            rigidbody.AddForce(0, jumpForce, 0);
+        Rigidbody rigidBody = gameObject.GetComponent<Rigidbody>();
+        Vector3 velocity = rigidBody.velocity;
+        if (velocity.y < fallTolerance)
+        {
+            rigidBody.AddForce(0, fallGravity, 0);
+        }
+
+        velocity.z = speed;
+        rigidBody.velocity = velocity;
+    }
+    private void Start()
+    {
+        Application.targetFrameRate = targetFrameRate;
+    }
+    void Update()
+    {
+        if(Input.GetButtonDown("Jump") && IsTouchingGround())
+        {
+            Rigidbody rigidBody = gameObject.GetComponent<Rigidbody>();
+            rigidBody.AddForce(0, jumpForce, 0);
+            rigidBody.angularVelocity = new Vector3(rotate, 0, 0);
         }
     }
 
-   private bool IsTouchingGround()
-   {
-       int layerMask = LayerMask.GetMask("Ground");
-       return Physics.CheckBox(transform.position,transform.lossyScale /1.99f,
-           transform.rotation, layerMask);
-   }
+    bool IsTouchingGround()
+    {
+        int layerMask = LayerMask.GetMask("Ground");
+        var transform1 = transform;
+        return Physics.CheckBox(transform1.position, transform1.lossyScale / 1.99f, 
+            transform1.rotation, layerMask);
+    }
 }

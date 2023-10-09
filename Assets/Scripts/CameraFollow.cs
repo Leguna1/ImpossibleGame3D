@@ -5,10 +5,12 @@ namespace DefaultNamespace
 {
     public class CameraFollow : MonoBehaviour
     {
+        public float yPosition = 2.5f;
+        public float zPosition = -5.5f;
         private void LateUpdate()
         {
             GameObject player = GameObject.Find("Player");
-            Vector3 target = player.transform.position + new Vector3(0, 2.59214f, -5.5603f);
+            Vector3 target = player.transform.position + new Vector3(0, yPosition, zPosition);
             transform.position = target;
         }
     }
