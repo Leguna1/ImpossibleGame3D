@@ -26,19 +26,22 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if(Input.GetButtonDown("Jump") && IsTouchingGround())
+        if(Input.GetButton("Jump") && IsTouchingGround())
         {
             Rigidbody rigidBody = gameObject.GetComponent<Rigidbody>();
-            rigidBody.AddForce(0, jumpForce, 0);
-            rigidBody.angularVelocity = new Vector3(rotate, 0, 0);
+            Vector3 velocity = rigidBody.velocity;
+            velocity.y = jumpForce;
+            rigidBody.velocity = velocity;
+            
         }
+        Rigidbody rigidBody2 = gameObject.GetComponent<Rigidbody>();
+        rigidBody2.angularVelocity = new Vector3(rotate, 0, 0);
     }
-
     bool IsTouchingGround()
     {
         int layerMask = LayerMask.GetMask("Ground");
         var transform1 = transform;
-        return Physics.CheckBox(transform1.position, transform1.lossyScale / 1.99f, 
+        return Physics.CheckBox(transform1.position, transform1.lossyScale / 0f, 
             transform1.rotation, layerMask);
     }
 }
