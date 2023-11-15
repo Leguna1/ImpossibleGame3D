@@ -6,7 +6,9 @@ namespace DefaultNamespace
     public class CameraFollow : MonoBehaviour
     {
         public float yPosition = 2.5f;
-        public float zPosition = -5.5f;
+        public float zPosition = -5.5f;-------------
+
+
         private void LateUpdate()
         {
             GameObject player = GameObject.Find("Player");
