@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 1f;
-    public float rotate = 2;
+    public float rotate = 45f;
     public float jumpForce = 300;
     public float fallGravity = -10;
     public float fallTolerance= -1f;
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
         }
         Rigidbody rigidBody2 = gameObject.GetComponent<Rigidbody>();
         rigidBody2.angularVelocity = new Vector3(rotate, 0, 0);
+
     }
     bool IsTouchingGround()
     {

@@ -1,15 +1,16 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace DefaultNamespace
 {
     public class GoalScript : MonoBehaviour
     {
-        private IEnumerator OnCollisionEnter(Collision other)
+        private void OnTriggerEnter(Collider other)
         {
-            yield return new WaitForSeconds(1);
-            SceneManager.LoadScene("WinScene");
+            if (other.CompareTag("Player")) //Looks for game object with tag "Player".
+            {
+                SceneManager.LoadScene("WinScene");
+            }
         }
     }
 }
